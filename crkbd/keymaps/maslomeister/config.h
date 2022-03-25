@@ -94,7 +94,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define OLED_DISABLE_TIMEOUT
 // #define TAPPING_TERM_PER_KEY
-#define TAPPING_TERM 150
+#define PERMISSIVE_HOLD
+#define TAPPING_TERM 200
 #define IGNORE_MOD_TAP_INTERRUPT
 // #define IGNORE_MOD_TAP_INTERRUPT_PER_KEY
 #define SPLIT_OLED_ENABLE
