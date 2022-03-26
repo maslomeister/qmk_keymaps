@@ -22,6 +22,8 @@ enum layers {
     _LOWER,
     _RAISE,
     _ADJUST,
+    _GAMING,
+    _GAMING_LOWER
 };
 
 uint16_t sleep_timer = 0;
@@ -95,6 +97,8 @@ enum custom_keycodes {
 #define TAB_RSE LT(_RAISE, KC_TAB)
 #define ENT_LWR LT(_LOWER, KC_ENT)
 #define ESC_LWR LT(_LOWER, KC_ESC)
+#define TAB_RSE LT(_RAISE, KC_TAB)
+#define GAMING_LOWER LT(_GAMING_LOWER, KC_ENT)
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -121,11 +125,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 [_ADJUST] = LAYOUT_split_3x5_3(\
-    RESET,   RGBRST,  KC_ASUP, KC_ASTG, KC_ASDN, _______, _______,      _______, _______,  KC_ASDN, KC_ASTG, KC_ASUP, RGBRST,   RESET, \
-            RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, _______, _______,      _______, _______,  RGB_VAI, RGB_SAI, RGB_HUI, RGB_TOG, \
-                GB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, _______, _______,      _______, _______,  RGB_VAD, RGB_SAD, RGB_HUD, RGB_MOD, \
-                                        _______, KC_TRNS,   _______,      _______, KC_TRNS,   _______\
+    KC_XXXXX,   RGBRST,  KC_ASUP, KC_ASTG, KC_ASDN, KC_XXXXX, KC_XXXXX,      KC_XXXXX, KC_XXXXX,  KC_ASDN, KC_ASTG, KC_ASUP, RGBRST, TO(_GAMING),/* RESET */ \
+            RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, KC_XXXXX, KC_XXXXX,      KC_XXXXX, KC_XXXXX,  RGB_VAI, RGB_SAI, RGB_HUI, RGB_TOG, \
+                RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, KC_XXXXX, KC_XXXXX,      KC_XXXXX, KC_XXXXX,  RGB_VAD, RGB_SAD, RGB_HUD, RGB_MOD, \
+                                        KC_XXXXX, KC_XXXXX,   KC_XXXXX,      KC_XXXXX, KC_XXXXX,   KC_XXXXX\
 ),
+
+[_GAMING] = LAYOUT_split_3x5_3(\
+    KC_LGUI,    KC_ESC,    KC_Q,   KC_W,    KC_E,   KC_R,   KC_T,      KC_Y,   KC_U,  KC_I,   KC_O,   KC_P,    KC_XXXXX,   KC_XXXXX, \
+                KC_LSFT,  KC_A,   KC_S,    KC_D,   KC_F,   KC_G,      KC_H,   KC_J,  KC_K,   KC_L,   KC_SCLN, KC_QUOT, \
+                KC_LCTL,   KC_Z,   KC_X,    KC_C,   KC_V,   KC_B,      KC_N,   KC_M,  KC_COMM, KC_DOT, KC_SLSH, KC_XXXXX, \
+                                        GAMING_LOWER, KC_SPC,   KC_TAB,      KC_XXXXX, KC_XXXXX,   KC_XXXXX\
+),
+
+[_GAMING_LOWER] = LAYOUT_split_3x5_3(\
+    KC_XXXXX,   KC_1,  KC_2, KC_3, KC______, KC______, KC______, KC______,       KC_F1, KC_F2,  KC_F3, KC_F4, KC_F5, KC_F6, \
+            KC______, KC_4, KC______, KC______, KC______, KC______,              KC_F7, KC_F8,  KC_F9, KC_F10, KC_F11, KC_F12, \
+                KC______, KC______, KC______, KC______, KC______, KC______,      KC______, KC______,  KC______, KC______, KC______, KC______, \
+                                        KC______, KC______,   KC______,         KC______, KC______,   TO(_QWERTY)\
+)
 
 };
 
@@ -194,7 +212,7 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 //all icons for the layer states
 void render_base(void) {
     static const char PROGMEM base[] = {
-		0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -215,7 +233,7 @@ void render_base(void) {
 }
 void render_lower(void) {
     static const char PROGMEM lower[] = {
-		0x80, 0x80, 0x00, 0x00, 0x00, 0x00,
+	0x80, 0x80, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -236,7 +254,7 @@ void render_lower(void) {
 }
 void render_raise(void) {
     static const char PROGMEM raise[] = {
-		0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x80, 0x80, 0x00,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -255,16 +273,92 @@ void render_raise(void) {
 	};
     oled_write_raw_P(raise, 96);
 }
+
+void render_adjust(void) {
+    static const char PROGMEM adjust[] = {
+    0x00, 0x00, 0x00, 0x60, 0xF8, 0xFC,
+    0xFC, 0xFC, 0xFC, 0xFC, 0xFC, 0xFC,
+    0xFC, 0xFC, 0xFC, 0xFC, 0xFC, 0xFC,
+    0xFC, 0xFC, 0xFC, 0xFC, 0xFC, 0xFC,
+    0xFC, 0xFC, 0xFC, 0xF8, 0x60, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x81, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3,
+    0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3,
+    0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0xC3,
+    0xC3, 0xC3, 0xC3, 0xC3, 0xC3, 0x81,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x06, 0x1F, 0x3F, 0x3F, 0x3F,
+    0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+    0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+    0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
+    0x3F, 0x1F, 0x06, 0x00, 0x00, 0x00
+    };
+    oled_write_raw_P(adjust, 96);
+}
+
+void render_gaming(void) {
+    static const char PROGMEM gaming[] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0xE0,
+    0xF0, 0xF0, 0xF0, 0xE0, 0xC0, 0x80,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0x7E, 0x3C, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x07, 0x0F, 0x0F,
+    0x0F, 0x07, 0x03, 0x01, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+    };
+    oled_write_raw_P(gaming, 96);
+}
+
+void render_gaming_lower(void) {
+    static const char PROGMEM gaming_lower[] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0xE0,
+    0xF0, 0xF0, 0xF0, 0xE0, 0xC0, 0x80,
+    0x00, 0x00, 0x00, 0x20, 0xDE, 0x20,
+    0x00, 0x08, 0xF6, 0x08, 0x00, 0x04,
+    0xFA, 0x04, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+    0xFF, 0xFF, 0xFF, 0x7E, 0x3C, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x07, 0x0F, 0x0F,
+    0x0F, 0x07, 0x03, 0x01, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+    };
+    oled_write_raw_P(gaming_lower, 96);
+}
+
 static void render_status(void) {
     switch (get_highest_layer(layer_state)) {
         case _QWERTY:
-					render_base();
+			render_base();
             break;
         case _LOWER:
-					render_lower();
+			render_lower();
             break;
         case _RAISE:
-					render_raise();
+			render_raise();
+            break;
+        case _ADJUST:
+			render_adjust();
+            break;
+        case _GAMING:
+			render_gaming();
+            break;
+        case _GAMING_LOWER:
+			render_gaming_lower();
             break;
         //default:
             //oled_write_P(PSTR(""), false);
@@ -651,6 +745,10 @@ static void render_anim(void) {
 			current_prep_frame = (current_prep_frame + 1) % PREP_FRAMES;
             oled_write_raw_P(prep[abs((PREP_FRAMES-1)-current_prep_frame)], ANIM_SIZE);
             break;
+        default:
+            current_idle_frame = (current_idle_frame + 1) % IDLE_FRAMES;
+            oled_write_raw_P(idle[abs((IDLE_FRAMES-1)-current_idle_frame)], ANIM_SIZE);
+            break;
         }
 	}
 
@@ -727,7 +825,7 @@ void render_logo(void) {
 
 
 void oled_task_user(void) {
-	if(keyboard_in_sleep){
+    if(keyboard_in_sleep){
 		oled_off();
 		return;
 	}
@@ -735,11 +833,11 @@ void oled_task_user(void) {
 	if (is_keyboard_master()) {
 		render_anim();
 		oled_set_cursor(0,13);
-    render_status();
+        render_status();
 	} else {
-    render_logo();
-    oled_scroll_left();
-  }
+        render_logo();
+        oled_scroll_left();
+    }
 }
 #endif
 
@@ -750,19 +848,17 @@ extern rgblight_config_t rgblight_config;
 #endif
 
 void keyboard_post_init_user(void) {
-		switchNumLock(host_keyboard_led_state().num_lock);
-		if(rgblight_is_enabled()){
-			rgb_enabled = 1;
-		}
+	switchNumLock(host_keyboard_led_state().num_lock);
+	if(rgblight_is_enabled()){
+		rgb_enabled = 1;
+	}
 }
 
 
 void matrix_scan_user(void) {
 	if(is_keyboard_master()){
-		if (keyboard_in_sleep == 0 &&
-        timer_elapsed(sleep_timer) >= 60000)
-    {
-			keyboard_sleep();
+		if (keyboard_in_sleep == 0 && timer_elapsed(sleep_timer) >= 60000) {
+		    keyboard_sleep();
 		}
 	}
 }
