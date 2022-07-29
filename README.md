@@ -1,6 +1,6 @@
 This is a collection of my layouts for different boards that support qmk
 
-# useful qmk related commands
+#Commands
 
 ### Change home folder of qmk
     qmk setup -H 'path' 
