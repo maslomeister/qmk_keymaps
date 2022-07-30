@@ -18,20 +18,21 @@
 
 enum layers { _QWERTY = 0, _LOWER, _RAISE, _ADJUST, _GAMING, _GAMING_LOWER };
 
-uint16_t sleep_timer       = 0;
-int8_t   rgb_enabled       = 0;
-int8_t   keyboard_in_sleep = 0;
+uint16_t       sleep_timer       = 0;
+int8_t         rgb_enabled       = 0;
+int8_t         keyboard_in_sleep = 0;
+const uint16_t sleep_timeout     = 60000;
 
 void keyboard_sleep(void) {
     keyboard_in_sleep = 1;
     if (rgb_enabled) {
-        rgb_matrix_disable();
+        rgb_matrix_disable_noeeprom();
     }
 }
 
 void keyboard_wakeup(void) {
     if (rgb_enabled) {
-        rgb_matrix_enable();
+        rgb_matrix_enable_noeeprom();
     }
     keyboard_in_sleep = 0;
 }
@@ -344,7 +345,7 @@ void keyboard_post_init_user(void) {
 
 void matrix_scan_user(void) {
     if (is_keyboard_master()) {
-        if (keyboard_in_sleep == 0 && timer_elapsed(sleep_timer) >= 60000) {
+        if (keyboard_in_sleep == 0 && timer_elapsed(sleep_timer) >= sleep_timeout) {
             keyboard_sleep();
         }
     }
