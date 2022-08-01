@@ -42,7 +42,7 @@ void keyboard_wakeup(void) {
 // windows only
 enum custom_keycodes {
     LNG_SW = SAFE_RANGE,
-    CLRPCK,
+    CLRPCK,   // powertoys color picker
     VSC,      // 3 pinned item on taskbar
     CHROME,   // 6 pinned item on taskbar
     TERMINAL, // 2 pinned app on taskbar
