@@ -47,7 +47,7 @@ enum custom_keycodes {
     CHROME,   // 6 pinned item on taskbar
     TERMINAL, // 2 pinned app on taskbar
     EXPLORER, // 1 pinned app on taskbar
-    SCRCUT,
+    SCRCUT,   // screenshot using win+shift+s
 };
 
 #define KC_LOWER LOWER
