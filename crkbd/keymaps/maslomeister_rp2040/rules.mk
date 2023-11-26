@@ -1,3 +1,6 @@
 OLED_ENABLE       = yes
 VIA_ENABLE        = yes
 RGB_MATRIX_ENABLE = yes
+RGBLIGHT_ENABLE = no
+# CONSOLE_ENABLE = yes
+BOOTLOADER = rp2040

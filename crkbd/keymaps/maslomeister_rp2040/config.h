@@ -20,12 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#define EE_HANDS
-
-#define USE_SERIAL_PD2
-
-#define NO_ACTION_MACRO
-#define NO_ACTION_FUNCTION
+#define MASTER_LEFT
 
 #ifdef RGBLIGHT_ENABLE
 #    define RGBLIGHT_LIMIT_VAL 120
@@ -34,14 +29,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGBLIGHT_VAL_STEP 17
 #endif
 
-#define OLED_DISABLE_TIMEOUT
 #define PERMISSIVE_HOLD
 #define TAPPING_TERM 180
-#define SPLIT_OLED_ENABLE
 
 #define NO_USB_STARTUP_CHECK
 
+#define SPLIT_OLED_ENABLE
+
 #define OLED_BRIGHTNESS 100
+
+#define I2C1_CLOCK_SPEED 400000
+#define OLED_UPDATE_INTERVAL 1
+// #define OLED_I2C_TIMEOUT 1
 
 /* ---------------------------
  * RP2040 RGB Configuration
@@ -68,7 +67,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ENABLE_RGB_MATRIX_DUAL_BEACON
 #define ENABLE_RGB_MATRIX_RAINBOW_BEACON
 #define ENABLE_RGB_MATRIX_RAINBOW_PINWHEELS
-#define ENABLE_RGB_MATRIX_RAINDROPS
+#define ENABLE_RGB_MATRIX_RAINkkddkdkfdksdfkjlsjdfdkdDROPS
 #define ENABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS
 #define ENABLE_RGB_MATRIX_HUE_BREATHING
 #define ENABLE_RGB_MATRIX_HUE_PENDULUM
