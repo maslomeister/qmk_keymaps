@@ -40,6 +40,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define I2C1_CLOCK_SPEED 400000
 #define OLED_UPDATE_INTERVAL 1
+#define DYNAMIC_KEYMAP_LAYER_COUNT 6
 // #define OLED_I2C_TIMEOUT 1
 
 /* ---------------------------
